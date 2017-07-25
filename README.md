@@ -15,4 +15,4 @@ svn checkout https://github.com/Ezandora/Lylefarm/branches/Release/
 
 Usage
 ----------------
-Type "lylefarm 300" into the graphical CLI, to farm for 300 adventures.
+Type "Lylefarm 300" into the graphical CLI, to farm for 300 adventures.
