@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.0";
+string __lyle_version = "1.0.1";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -91,8 +91,10 @@ void main(int adventures_to_use)
 		amount_before[it] = it.item_amount();
 	
 	reachFarmingPage();
-	while (my_adventures() >= 5 && adventures_to_use > 0)
+	int breakout = 300;
+	while (my_adventures() >= 5 && adventures_to_use >= 5 && breakout > 0)
 	{
+		breakout -= 1;
 		buffer page_text = visit_url("choice.php");
 		if (!page_text.contains_text("How about sweat"))
 		{
