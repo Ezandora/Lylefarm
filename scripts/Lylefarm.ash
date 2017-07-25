@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.0.1";
+string __lyle_version = "1.0.2";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -78,9 +78,14 @@ void escapeLyle()
 void main(int adventures_to_use)
 {
 	print_html("Lylefarm version " + __lyle_version + ".");
-	if (adventures_to_use < 5 || my_adventures() < 5)
+	if (my_adventures() < 5)
 	{
 		print_html("<font color=\"red\">Need at least five adventures to farm this absolutely legitimate and worthwhile stock.</font>");
+		return;
+	}
+	if (adventures_to_use < 5)
+	{
+		print_html("<font color=\"red\">Specify at least five adventures to farm this absolutely legitimate and worthwhile stock.</font>");
 		return;
 	}
 	boolean [item] relevant_items;
