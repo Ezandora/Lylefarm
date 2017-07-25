@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.0.2";
+string __lyle_version = "1.0.3";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -121,5 +121,7 @@ void main(int adventures_to_use)
 			print("Collected " + delta + " " + (delta > 1 ? it.plural : it) + ".");
 		}
 	}
+	if (to_item("dust bunny").item_amount() > 0 && hippy_stone_broken()) //protect ourselves from PVP
+		cli_execute("closet put * dust bunny");
 	print_html("Done.");
 }
