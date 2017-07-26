@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.0.3";
+string __lyle_version = "1.0.4";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -113,14 +113,29 @@ void main(int adventures_to_use)
 	}
 	escapeLyle();
 	print_html("");
+	string file_name = "lylefarm_" + my_id() + ".txt";
+	int [item] file_archive;
+	file_to_map(file_name, file_archive);
 	foreach it in relevant_items
 	{
 		int delta = it.item_amount() - amount_before[it];
 		if (delta > 0)
 		{
 			print("Collected " + delta + " " + (delta > 1 ? it.plural : it) + ".");
+			file_archive[it] += delta;
 		}
 	}
+	map_to_file(file_archive, file_name);
+	
+	string line = "";
+	int bunnies_archive = file_archive[to_item("dust bunny")];
+	if (bunnies_archive > 0)
+	{
+		int certificates_archive = file_archive[to_item("L.I.M.P. Stock Certificate")];
+		float rate = to_float(bunnies_archive) / to_float(certificates_archive);
+		print("Historical: farmed " + certificates_archive + " certificates and " + bunnies_archive + " bunnies. Rate of " + (round(rate * 1000.0) / 10.0) + "%.");
+	}
+	
 	if (to_item("dust bunny").item_amount() > 0 && hippy_stone_broken()) //protect ourselves from PVP
 		cli_execute("closet put * dust bunny");
 	print_html("Done.");
