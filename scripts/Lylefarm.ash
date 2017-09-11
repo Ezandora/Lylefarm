@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.0.4";
+string __lyle_version = "1.1";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -20,12 +20,15 @@ boolean run_choice_by_text(string page_text, string identifier)
 void reachFarmingPage()
 {
 	visit_url("place.php?whichplace=town_right&action=townright_lyle");
+	if (true)
+		return;
 	int breakout = 20;
 	while (breakout > 0)
 	{
 		breakout -= 1;
 		buffer page_text = visit_url("choice.php");
-		if (page_text.contains_text("All you need is ten thousand meat and a dream"))
+		//if (page_text.contains_text("All you need is ten thousand meat and a dream"))
+		if (page_text.contains_text("and a dream") && page_text.contains_text("is ten thousand")) //Awl ewe knead is ten thousand meet and a dream!
 		{
 			//print_html("Reached farming page.");
 			return;
@@ -60,7 +63,8 @@ void escapeLyle()
 	{
 		breakout -= 1;
 		buffer page_text = visit_url("choice.php");
-		if (page_text.contains_text("If your pocketbook is low on bank"))
+		run_choice_by_text(page_text, "Maybe later");
+		if (page_text.contains_text("pocketbook") && page_text.contains_text("get it from Hagnk"))
 		{
 			run_choice_by_text(page_text, "0 Meat");
 		}
@@ -77,45 +81,55 @@ void escapeLyle()
 
 void main(int adventures_to_use)
 {
+	int adventures_per_john_henry = 11;
 	print_html("Lylefarm version " + __lyle_version + ".");
-	if (my_adventures() < 5)
+	if (my_adventures() < adventures_per_john_henry)
 	{
-		print_html("<font color=\"red\">Need at least five adventures to farm this absolutely legitimate and worthwhile stock.</font>");
+		print_html("<font color=\"red\">Need at least eleven adventures to farm this absolutely legitimate and worthwhile stock.</font>");
 		return;
 	}
-	if (adventures_to_use < 5)
+	if (adventures_to_use < adventures_per_john_henry)
 	{
-		print_html("<font color=\"red\">Specify at least five adventures to farm this absolutely legitimate and worthwhile stock.</font>");
+		print_html("<font color=\"red\">Specify at least eleven adventures to farm this absolutely legitimate and worthwhile stock.</font>");
 		return;
 	}
 	boolean [item] relevant_items;
 	relevant_items[to_item("L.I.M.P. Stock Certificate")] = true;
 	relevant_items[to_item("dust bunny")] = true;
+	relevant_items[to_item("shovelful of dirt")] = true;
+	relevant_items[to_item("hunk of granite")] = true;
 	int [item] amount_before;
 	foreach it in relevant_items
 		amount_before[it] = it.item_amount();
-	
 	reachFarmingPage();
 	int breakout = 300;
-	while (my_adventures() >= 5 && adventures_to_use >= 5 && breakout > 0)
+	while (my_adventures() >= adventures_per_john_henry && adventures_to_use >= adventures_per_john_henry && breakout > 0)
 	{
 		breakout -= 1;
 		buffer page_text = visit_url("choice.php");
-		if (!page_text.contains_text("How about sweat"))
+		if (!page_text.contains_text("Work a shovel?"))
 		{
 			break;
 		}
 		
 		//print_html("page_text = " + page_text.entity_encode());
-		run_choice_by_text(page_text, "How about sweat equity? (5 adventures)");
+		if (random(2) == 0)
+			run_choice_by_text(page_text, "Work a shovel? (11 adventures)");
+		else
+			run_choice_by_text(page_text, "Work a sledgehammer? (11 adventures)");
 		
-		adventures_to_use -= 5;
+		adventures_to_use -= adventures_per_john_henry;
 	}
 	escapeLyle();
 	print_html("");
-	string file_name = "lylefarm_" + my_id() + ".txt";
+	string file_name = "lylefarm_stage_2_" + my_id() + ".txt";
 	int [item] file_archive;
 	file_to_map(file_name, file_archive);
+	
+	
+	//just in case these start existing to us:
+	relevant_items[to_item("shovelful of dirt")] = true;
+	relevant_items[to_item("hunk of granite")] = true;
 	foreach it in relevant_items
 	{
 		int delta = it.item_amount() - amount_before[it];
