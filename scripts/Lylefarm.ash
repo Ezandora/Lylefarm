@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.1";
+string __lyle_version = "1.1.1";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -103,6 +103,9 @@ void main(int adventures_to_use)
 		amount_before[it] = it.item_amount();
 	reachFarmingPage();
 	int breakout = 300;
+	boolean should_shovel_next = false;
+	if (random(2) == 0)
+		should_shovel_next = true;
 	while (my_adventures() >= adventures_per_john_henry && adventures_to_use >= adventures_per_john_henry && breakout > 0)
 	{
 		breakout -= 1;
@@ -113,10 +116,11 @@ void main(int adventures_to_use)
 		}
 		
 		//print_html("page_text = " + page_text.entity_encode());
-		if (random(2) == 0)
+		if (should_shovel_next)
 			run_choice_by_text(page_text, "Work a shovel? (11 adventures)");
 		else
 			run_choice_by_text(page_text, "Work a sledgehammer? (11 adventures)");
+		should_shovel_next = !should_shovel_next;
 		
 		adventures_to_use -= adventures_per_john_henry;
 	}
