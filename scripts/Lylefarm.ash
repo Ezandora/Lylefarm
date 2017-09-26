@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.2";
+string __lyle_version = "1.2.1";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -83,7 +83,7 @@ void escapeLyle()
 void main(int adventures_to_use)
 {
 	int adventures_per_john_henry = 1;
-	if (adventures_to_use > 10) adventures_to_use = 10;
+	if (adventures_to_use > 11) adventures_to_use = 11;
 	print_html("Lylefarm version " + __lyle_version + ".");
 	if (my_adventures() < adventures_per_john_henry)
 	{
