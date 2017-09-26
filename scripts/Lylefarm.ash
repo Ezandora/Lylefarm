@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.1.1";
+string __lyle_version = "1.2";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -19,7 +19,7 @@ boolean run_choice_by_text(string page_text, string identifier)
 
 void reachFarmingPage()
 {
-	visit_url("place.php?whichplace=town_right&action=townright_lyle");
+	//visit_url("place.php?whichplace=town_right&action=townright_lyle");
 	if (true)
 		return;
 	int breakout = 20;
@@ -64,6 +64,7 @@ void escapeLyle()
 		breakout -= 1;
 		buffer page_text = visit_url("choice.php");
 		run_choice_by_text(page_text, "Maybe later");
+		run_choice_by_text(page_text, "I'm not really afraid, but this is taking FOREVER!");
 		if (page_text.contains_text("pocketbook") && page_text.contains_text("get it from Hagnk"))
 		{
 			run_choice_by_text(page_text, "0 Meat");
@@ -81,7 +82,8 @@ void escapeLyle()
 
 void main(int adventures_to_use)
 {
-	int adventures_per_john_henry = 11;
+	int adventures_per_john_henry = 1;
+	if (adventures_to_use > 10) adventures_to_use = 10;
 	print_html("Lylefarm version " + __lyle_version + ".");
 	if (my_adventures() < adventures_per_john_henry)
 	{
@@ -109,7 +111,7 @@ void main(int adventures_to_use)
 	while (my_adventures() >= adventures_per_john_henry && adventures_to_use >= adventures_per_john_henry && breakout > 0)
 	{
 		breakout -= 1;
-		buffer page_text = visit_url("choice.php");
+		/*buffer page_text = visit_url("choice.php");
 		if (!page_text.contains_text("Work a shovel?"))
 		{
 			break;
@@ -120,7 +122,9 @@ void main(int adventures_to_use)
 			run_choice_by_text(page_text, "Work a shovel? (11 adventures)");
 		else
 			run_choice_by_text(page_text, "Work a sledgehammer? (11 adventures)");
-		should_shovel_next = !should_shovel_next;
+		should_shovel_next = !should_shovel_next;*/
+		visit_url("adventure.php?snarfblat=496");
+		
 		
 		adventures_to_use -= adventures_per_john_henry;
 	}
