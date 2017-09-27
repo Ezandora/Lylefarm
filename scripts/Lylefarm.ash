@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.2.1";
+string __lyle_version = "1.2.2";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -124,6 +124,8 @@ void main(int adventures_to_use)
 			run_choice_by_text(page_text, "Work a sledgehammer? (11 adventures)");
 		should_shovel_next = !should_shovel_next;*/
 		visit_url("adventure.php?snarfblat=496");
+		visit_url("main.php");
+		run_combat();
 		
 		
 		adventures_to_use -= adventures_per_john_henry;
