@@ -2,7 +2,7 @@
 //This script is in the public domain.
 //Written by Ezandora.
 
-string __lyle_version = "1.2.2";
+string __lyle_version = "1.2.3";
 
 boolean run_choice_by_text(string page_text, string identifier)
 {
@@ -83,7 +83,7 @@ void escapeLyle()
 void main(int adventures_to_use)
 {
 	int adventures_per_john_henry = 1;
-	if (adventures_to_use > 11) adventures_to_use = 11;
+	//if (adventures_to_use > 11) adventures_to_use = 11;
 	print_html("Lylefarm version " + __lyle_version + ".");
 	if (my_adventures() < adventures_per_john_henry)
 	{
@@ -95,6 +95,28 @@ void main(int adventures_to_use)
 		print_html("<font color=\"red\">Specify at least eleven adventures to farm this absolutely legitimate and worthwhile stock.</font>");
 		return;
 	}
+	if ($item[drunkula's wineglass].equipped_amount() == 0 && my_inebriety() > inebriety_limit()) //'
+	{
+		print_html("<font color=\"red\">You are drunk.</font>");
+		return;
+	}
+	
+	slot next_slot = $slot[acc1];
+	foreach it in $items[mafia organizer badge,worksite credentials]
+	{
+		if (it.equipped_amount() == 0 && it.available_amount() > 0 && it.can_equip())
+		{
+			equip(next_slot, it);
+			if (next_slot == $slot[acc1])
+				next_slot = $slot[acc2];
+			else
+				next_slot = $slot[acc3];
+		}
+	}
+	
+	
+	visit_url("place.php?whichplace=town_right&action=townright_lyle");
+	run_choice_by_text(visit_url("choice.php"), "&quot;No Thanks.&quot;");
 	boolean [item] relevant_items;
 	relevant_items[to_item("L.I.M.P. Stock Certificate")] = true;
 	relevant_items[to_item("dust bunny")] = true;
@@ -123,10 +145,12 @@ void main(int adventures_to_use)
 		else
 			run_choice_by_text(page_text, "Work a sledgehammer? (11 adventures)");
 		should_shovel_next = !should_shovel_next;*/
-		visit_url("adventure.php?snarfblat=496");
+		buffer page_text = visit_url("adventure.php?snarfblat=496");
 		visit_url("main.php");
 		run_combat();
 		
+		if (page_text.length() == 0 || page_text.contains_text("regulations prevent you from spending any more time at the work site"))
+			break;
 		
 		adventures_to_use -= adventures_per_john_henry;
 	}
